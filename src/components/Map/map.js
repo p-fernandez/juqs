@@ -1,28 +1,44 @@
-import React, { useEffect, useRef } from 'react';
+import React, {
+  useEffect,
+  useRef,
+} from 'react';
+import {
+  useDispatch,
+} from 'react-redux';
 import styled from 'styled-components';
 
+import Pins from '../Pins';
 import useMouseClick from '../../hooks/use-mouse-click';
 import useMousePosition from '../../hooks/use-mouse-position';
-import useMouseRightClick from '../../hooks/use-mouse-right-click';
 
 const MapContainer = styled.div`
-  background-color: red;
+  background-color: green;
   height: 500px;
   margin: 0;
+  overflow: hidden;
   padding: 0;
+  position: relative;
   width: 500px;
 `;
 
 const Map = ({ onUpdate }) => {
   const ref = useRef();
   const coords = useMousePosition(ref.current);
-  useMouseClick(ref.current);
-  useMouseRightClick(ref.current);
+  const clickCoords = useMouseClick(ref.current);
+
+  const dispatch = useDispatch();
 
   useEffect(() => onUpdate(coords), [onUpdate, coords]);
 
+  useEffect(() => {
+    const { x, y } = clickCoords;
+    dispatch({ type: 'SET', x, y });
+  }, [clickCoords, dispatch]);
+
   return (
-    <MapContainer ref={ref} />
+    <MapContainer ref={ref}>
+      <Pins />
+    </MapContainer>
   );
 };
 

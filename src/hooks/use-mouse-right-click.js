@@ -1,23 +1,23 @@
-import { useCallback } from 'react';
-
 import {
-  calculateCoordsInsideElement
-} from './common-helpers';
+  useCallback,
+  useState,
+} from 'react';
+
 import useEventListener from './use-event-listener';
 
-const PREVENT_DEFAULT = true;
-
-const useMouseRightClick = (element) => {
+const useMouseRightClick = (element, action) => {
+  const [clicked, setClick] = useState(false);
   const handler = useCallback(
     (e) => {
       e.preventDefault();
-      const { x, y } = calculateCoordsInsideElement(element, e.clientX, e.clientY);
-      alert(`This is a right click at ${x}, ${y}`);
+      setClick(!clicked);
     },
-    [element]
+    [clicked, setClick]
   );
 
-  useEventListener('contextmenu', handler, element, PREVENT_DEFAULT);
+  useEventListener('contextmenu', handler, element);
+
+  return clicked;
 };
 
 export default useMouseRightClick;
