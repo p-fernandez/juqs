@@ -15,7 +15,7 @@ module.exports = webpackMerge(commonConfig, {
     open: true,
     port: 8000 
   },
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
   mode: 'development',
   plugins: [
     new CleanWebpackPlugin(),

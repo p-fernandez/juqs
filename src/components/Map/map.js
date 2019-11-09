@@ -20,9 +20,11 @@ const MapContainer = styled.div`
   width: 500px;
 `;
 
-const useSetPoint = (x, y) => useDispatch({ type: 'SET', x, y });
+function useSetPoint(x, y) {
+  useDispatch({ type: 'SET', x, y });
+}
 
-const Map = ({ onUpdate }) => {
+const Map = () => {
   const ref = useRef();
   const { x, y } = useMouseClick(ref.current);
 
