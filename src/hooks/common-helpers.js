@@ -1,4 +1,5 @@
 const calculateCoordsInsideElement = (element, clientX, clientY) => {
+  console.log(element);
   const { left, top } = element.getBoundingClientRect();
   const x = clientX - left;
   const y = clientY - top;

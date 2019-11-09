@@ -1,5 +1,4 @@
 import React, {
-  useEffect,
   useRef,
 } from 'react';
 import {
@@ -8,8 +7,8 @@ import {
 import styled from 'styled-components';
 
 import Pins from '../Pins';
+import useEffectOnlyOnUpdate from  '../../hooks/use-effect-only-on-update';
 import useMouseClick from '../../hooks/use-mouse-click';
-import useMousePosition from '../../hooks/use-mouse-position';
 
 const MapContainer = styled.div`
   background-color: green;
@@ -21,19 +20,13 @@ const MapContainer = styled.div`
   width: 500px;
 `;
 
+const useSetPoint = (x, y) => useDispatch({ type: 'SET', x, y });
+
 const Map = ({ onUpdate }) => {
   const ref = useRef();
-  const coords = useMousePosition(ref.current);
-  const clickCoords = useMouseClick(ref.current);
+  const { x, y } = useMouseClick(ref.current);
 
-  const dispatch = useDispatch();
-
-  useEffect(() => onUpdate(coords), [onUpdate, coords]);
-
-  useEffect(() => {
-    const { x, y } = clickCoords;
-    dispatch({ type: 'SET', x, y });
-  }, [clickCoords, dispatch]);
+  useEffectOnlyOnUpdate(useSetPoint(x, y), [useSetPoint, x, y]);
 
   return (
     <MapContainer ref={ref}>

@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import {
   Map,
-  PositionBoard
 } from './components';
 
 const AppContainer = styled.div`
@@ -14,12 +13,9 @@ const AppContainer = styled.div`
 `;
 
 const App = () => {
-  const [coords, onUpdate] = useState({ x: 0, y: 0 });
-
   return (
     <AppContainer className="appContainer">
-      <PositionBoard coords={coords} />
-      <Map onUpdate={onUpdate} />
+      <Map />
     </AppContainer>
   );
 }

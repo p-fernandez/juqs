@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  shallowEqual,
   useSelector,
 } from 'react-redux';
 
@@ -14,7 +15,7 @@ const paintPins = (pins) => {
 }
 
 const Pins = () => {
-  const pins = useSelector(state => state.pins);
+  const pins = useSelector(state => state.pins, shallowEqual);
 
   return pins.size > 0 && paintPins(pins);
 };
