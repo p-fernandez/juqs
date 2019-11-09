@@ -8,7 +8,7 @@ import {
 } from './common-helpers';
 import useEventListener from './use-event-listener';
 
-const useMouseClick = (element) => {
+const useMouseClick = (element, callback) => {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const handler = useCallback(
     ({ clientX, clientY }) => {

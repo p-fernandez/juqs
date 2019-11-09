@@ -1,58 +1,31 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useReducer,
-  useState,
-} from 'react';
+import React from 'react';
 
-
+import ErrorScreen from '../ErrorScreen';
 import Point from '../Point';
+import useFetch from '../../hooks/use-fetch';
+import apiResponseAdapter from '../../interfaces/adapters/api-response-adapter';
 
-const createHash = (x, y) => `x${x}y${y}`;
+const Pins = () => {
+  const {
+    error,
+    isLoading,
+    response,
+  } = useFetch('http://localhost:8080/api/points');
 
-const pinsReducer = (state = { pins: new Map() }, action) => {
-  const { pins } = state;
-  const { coords: { x, y } = {}} = action || {};
-  const hash = createHash(x, y);
-
-  switch (action.type) {
-    case 'SET':
-      pins.set(hash, { x, y });
-
-      return {
-        ...state,
-        pins,
-      };
-    case 'DELETE':
-      pins.delete(hash);
-
-      return {
-        ...state,
-        pins,
-      };
-    default:
-      return state;
-  }
-};
-
-const Pins = (coords) => {
-  const [pins, dispatch] = useReducer(pinsReducer);
-  dispatch({ type: 'SET', coords });
-
-  const entries = [];
-
-  if (pins && pins.size > 0) {
-    for (let [hash, { x, y }] of pins.entries()) {
-      entries.push(<Point key={hash} x={x} y={y} />);
-    }
+  if (isLoading) {
+    return 'Loading !!';
   }
 
-  return (
-    <div>
-      { entries }
-    </div>
-  );
+  if (error) {
+    return (
+      <ErrorScreen error={error} />
+    );
+  }
+
+  const pins = (response && apiResponseAdapter(response)) || [];
+
+  return pins && pins.length > 0
+    && pins.map(({ id, x, y }) => (<Point key={id} x={x} y={y} />));
 };
 
 export default Pins;

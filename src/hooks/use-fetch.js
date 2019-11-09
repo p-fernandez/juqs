@@ -3,7 +3,8 @@ import {
   useState,
 } from 'react';
 
-const useFetch = (url, options) => {
+const useFetch = (url, options = null) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   
@@ -12,15 +13,22 @@ const useFetch = (url, options) => {
       try {
         const res = await fetch(url, options);
         const json = await res.json();
-        setResponse(json);
+
+        if (json.errors) {
+          setError(json);
+        } else {
+          setResponse(json);
+        }
       } catch (error) {
         setError(error);
       }
+     
+      setIsLoading(false);
     };
     fetchData();
   }, [url, options]);
 
-  return { response, error };
+  return { isLoading, response, error };
 };
 
 export default useFetch;

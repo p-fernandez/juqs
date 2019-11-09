@@ -17,10 +17,23 @@ const MapContainer = styled.div`
   width: 500px;
 `;
 
+const createHash = (x, y) => `x${x}y${y}`;
+
 const Map = () => {
   const ref = useRef();
   const coords = useMouseClick(ref);
-  useFetch('http://localhost:3000/api/point', {});
+  const { x, y } = coords;
+
+  console.log(x, y);
+  const options = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({id: createHash(x, y), x, y })
+  };
+  useFetch('http://localhost:8080/api/points', options);
 
   return (
     <MapContainer ref={ref}>
