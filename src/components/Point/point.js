@@ -28,7 +28,7 @@ const Circle = styled.div`
 
 const Point = ({ hash, x, y }) => {
   const ref = useRef();
-  const clicked = useMouseRightClick(ref.current);
+  const clicked = useMouseRightClick(ref);
   
   const dispatch = useDispatch();
   clicked && dispatch({ type: 'DELETE', x, y });

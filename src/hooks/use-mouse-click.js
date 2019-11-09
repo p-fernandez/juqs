@@ -1,6 +1,5 @@
 import {
   useCallback,
-  useState,
 } from 'react';
 
 import {
@@ -8,10 +7,9 @@ import {
 } from './common-helpers';
 import useEventListener from './use-event-listener';
 
-const useMouseClick = (element) => {
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
+const useMouseClick = (element, setCoords) => {
   const handler = useCallback(
-    ({ event, clientX, clientY }) => {
+    ({ clientX, clientY }) => {
       const { x, y } = calculateCoordsInsideElement(element, clientX, clientY);
       setCoords({ x, y });
     },
@@ -19,8 +17,6 @@ const useMouseClick = (element) => {
   );
 
   useEventListener('click', handler, element);
-
-  return coords;
 };
 
 export default useMouseClick;

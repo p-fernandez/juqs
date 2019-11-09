@@ -1,13 +1,12 @@
 import React, {
+  useEffect,
   useRef,
+  useReducer,
+  useState,
 } from 'react';
-import {
-  useDispatch,
-} from 'react-redux';
 import styled from 'styled-components';
 
 import Pins from '../Pins';
-import useEffectOnlyOnUpdate from  '../../hooks/use-effect-only-on-update';
 import useMouseClick from '../../hooks/use-mouse-click';
 
 const MapContainer = styled.div`
@@ -20,19 +19,49 @@ const MapContainer = styled.div`
   width: 500px;
 `;
 
-function useSetPoint(x, y) {
-  useDispatch({ type: 'SET', x, y });
-}
+const createHash = (x, y) => `x${x}y${y}`;
+
+const pinsReducer = (state, action) => {
+  const { pins } = state;
+  const { coords: { x, y } = {}} = action || {};
+  const hash = createHash(x, y);
+
+  switch (action.type) {
+    case 'SET':
+      pins.set(hash, { x, y });
+
+      return {
+        ...state,
+        pins,
+      };
+    case 'DELETE':
+      pins.delete(hash);
+
+      return {
+        ...state,
+        pins,
+      };
+    default:
+      return state;
+  }
+};
 
 const Map = () => {
   const ref = useRef();
-  const { x, y } = useMouseClick(ref.current);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [pins, dispatch] = useReducer(pinsReducer, new Map());
 
-  useEffectOnlyOnUpdate(useSetPoint(x, y), [useSetPoint, x, y]);
+  console.log(pins);
+
+  useEffect(() => {
+    dispatch({ TYPE: 'SET', coords });
+  }, [coords]);
+ 
+  useMouseClick(ref, setCoords);
 
   return (
     <MapContainer ref={ref}>
-      <Pins />
+      <Pins pins={pins} />
     </MapContainer>
   );
 };

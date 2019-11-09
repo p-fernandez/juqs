@@ -1,23 +1,23 @@
 import React from 'react';
 import {
-  shallowEqual,
   useSelector,
 } from 'react-redux';
 
 import Point from '../Point';
 
-const paintPins = (pins) => {
+const Pins = (pins) => {
   const entries = [];
-  for (const [hash, { x, y }] of pins.entries()) {
-    entries.push(<Point key={hash} x={x} y={y} />);
+  if (pins.size > 0) {
+    for (let [hash, { x, y }] of pins.entries()) {
+       entries.push(<Point key={hash} x={x} y={y} />);
+    }
   }
-  return entries;
-}
 
-const Pins = () => {
-  const pins = useSelector(state => state.pins, shallowEqual);
-
-  return pins.size > 0 && paintPins(pins);
+  return (
+    <div>
+      { entries }
+    </div>
+  );
 };
 
 export default Pins;

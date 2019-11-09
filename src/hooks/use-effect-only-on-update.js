@@ -5,7 +5,6 @@ import {
 
 import useComponentIsMounted from './use-component-is-mounted';
 
-const voidFunction = () => {};
 
 const useEffectOnlyOnUpdate = (effect, dependencies) => {
   const isMounted = useComponentIsMounted();
@@ -13,13 +12,14 @@ const useEffectOnlyOnUpdate = (effect, dependencies) => {
 
   let { current } = isMounted;
   useEffect(() => {
-    let effectCleanupFunc;
+    let effectCleanupFunc = function noop() {};
 
     if (isInitialMount.current) {
       isInitialMount.current = false;
     } else {
-      effectCleanupFunc = effect() || voidFunction;
+      effectCleanupFunc = effect() || effectCleanupFunc;
     }
+
     return () => {
       effectCleanupFunc();
 

@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 
-const useEventListener = (eventName, handler, element = window) => {
+const useEventListener = (eventName, handler, element) => {
   const savedHandler = useRef();
 
   useEffect(() => {
@@ -8,17 +8,18 @@ const useEventListener = (eventName, handler, element = window) => {
   }, [handler]);
 
   useEffect(() => {
-    const isSupported = element && element.addEventListener;
+    const isSupported = element && element.current && element.current.addEventListener;
     if (!isSupported) {
+      console.error(`Unable to add ${eventName} to ${element}`); 
       return;     
     }
 
     const eventListener = event => savedHandler.current(event);
      
-    element.addEventListener(eventName, eventListener);
+    element.current.addEventListener(eventName, eventListener);
       
     return () => {
-      element.removeEventListener(eventName, eventListener);
+      element.current.removeEventListener(eventName, eventListener);
     };
   }, [eventName, element]);
 };
