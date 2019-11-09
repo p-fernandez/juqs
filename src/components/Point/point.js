@@ -1,9 +1,6 @@
 import React, {
   useRef,
 } from 'react';
-import {
-  useDispatch,
-} from 'react-redux';
 import styled from 'styled-components';
 
 import useMouseRightClick from '../../hooks/use-mouse-right-click';
@@ -29,10 +26,8 @@ const Circle = styled.div`
 const Point = ({ hash, x, y }) => {
   const ref = useRef();
   const clicked = useMouseRightClick(ref);
+  console.log(clicked);
   
-  const dispatch = useDispatch();
-  clicked && dispatch({ type: 'DELETE', x, y });
-
   return (
     <Circle ref={ref}
       key={hash}
