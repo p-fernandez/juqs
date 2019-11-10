@@ -1,10 +1,11 @@
 import React, {
+  useEffect,
   useRef,
+  useState,
 } from 'react';
 import styled from 'styled-components';
 
 import useFetch from 'hooks/use-fetch';
-import useMouseRightClick from 'hooks/use-mouse-right-click';
 
 const Circle = styled.div`
   background-color: red;
@@ -26,23 +27,32 @@ const Circle = styled.div`
 
 const Point = ({ id, x, y }) => {
   const ref = useRef();
-  const options = {
-    method: 'DELETE',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-  };
-  const callback = useFetch(`http://localhost:8080/api/points/${id}`, options);
+  const [doDelete, setDoDelete] = useState(false);
 
-  useMouseRightClick(ref, callback);
+  const onHandleRightClick = (e) => {
+    e.preventDefault();
+    setDoDelete(true);
+  }
+
+  useEffect(() => {
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    };
+    useFetch(`http://localhost:8080/api/points/${id}`, options);
+  }, [id, doDelete]);
 
   return (
     <Circle ref={ref}
       key={id}
       x={x}
       y={y}
-    />);
+      onContextMenu={onHandleRightClick}
+    />
+  );
 };
 
 export default Point;

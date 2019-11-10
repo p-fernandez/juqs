@@ -24,19 +24,21 @@ const createHash = (x, y) => `x${x}y${y}`;
 
 const Map = () => {
   const ref = useRef();
-  /*
   const coords = useMouseClick(ref);
   const { x, y } = coords;
-  const options = {
+  /*
+  const [{ response, isLoading, error }, setOptions, setUrl] = useFetch();
+  
+  setOptions({
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({id: createHash(x, y), x, y })
-  };
-  useFetch('http://localhost:8080/api/points', options);
-*/
+  });
+  setUrl('http://localhost:8080/api/points');
+  */
   return (
     <MapContainer ref={ref} image={map}>
       <ImageContainer alt='map' src={map} />

@@ -1,32 +1,65 @@
 import {
-  useCallback,
   useEffect,
-  useState,
+  useReducer,
 } from 'react';
 
-const useFetch = (url, options = null) => {
-  const [response, setResponse] = useState(null);
-  const [error, setError] = useState(null);
-  
-  useCallback(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch(url, options);
-        const json = await res.json();
+const fetchReducer = (state, action) => {
+ switch (action.type) {
+    case 'FETCH_INIT':
+      return {
+        ...state,
+        isLoading: true,
+        isError: null
+      };
+    case 'FETCH_SUCCESS':
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        response: action.payload,
+      };
+    case 'FETCH_FAILURE':
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
+    default:
+      throw new Error();
+  }
+};
 
-        if (json.errors) {
-          setError(json);
-        } else {
-          setResponse(json);
+const useFetch = (url, options) => {
+  const [state, dispatch] = useReducer(fetchReducer, {
+    isLoading: false,
+    error: null,
+    response: null,
+  });
+
+  useEffect(() => {
+    let unmounted = false;
+
+    const fetchData = async () => {
+      if (!unmounted) {
+        dispatch({ type: 'FETCH_INIT' });
+        try {
+          const result = await fetch(url, options);
+          const json = await result.json();
+          dispatch({ type: 'FETCH_SUCCESS', payload: json });
+        } catch (error) {
+          dispatch({ type: 'FETCH_FAILURE', payload: error });
         }
-      } catch (error) {
-        setError(error);
       }
     };
-    fetchData();
-  }, []);
 
-  return { response, error };
+    fetchData();
+
+    return () => {
+      unmounted = true;
+    };
+  }, [url, options]);
+
+  return state;
 };
 
 export default useFetch;

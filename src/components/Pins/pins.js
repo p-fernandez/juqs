@@ -1,19 +1,25 @@
 import React from 'react';
 
-import ErrorScreen from 'components/ErrorScreen';
-import Point from 'components/Point';
+import {
+  ErrorScreen,
+  Loading,
+  Point,
+} from 'components';
 import useFetch from 'hooks/use-fetch';
 import apiResponseAdapter from 'interfaces/adapters/api-response-adapter';
 
 const Pins = () => {
+  const url = 'http://localhost:8080/api/points';
   const {
+    response,
     error,
     isLoading,
-    response,
-  } = useFetch('http://localhost:8080/api/points');
+  } = useFetch(url);
 
   if (isLoading) {
-    return 'Loading !!';
+    return (
+      <Loading />
+    );
   }
 
   if (error) {
