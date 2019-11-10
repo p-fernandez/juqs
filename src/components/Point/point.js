@@ -27,23 +27,23 @@ const Circle = styled.div`
 
 const Point = ({ id, x, y }) => {
   const ref = useRef();
-  const [doDelete, setDoDelete] = useState(false);
 
   const onHandleRightClick = (e) => {
     e.preventDefault();
-    setDoDelete(true);
   }
 
-  useEffect(() => {
-    const options = {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-    };
-    useFetch(`http://localhost:8080/api/points/${id}`, options);
-  }, [id, doDelete]);
+  const options = {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  };
+  const { isLoading, response, error } = useFetch(`http://localhost:8080/api/points/${id}`, options);
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <Circle ref={ref}
