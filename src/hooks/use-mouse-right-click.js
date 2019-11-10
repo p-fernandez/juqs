@@ -1,23 +1,20 @@
 import {
   useCallback,
-  useState,
 } from 'react';
 
 import useEventListener from './use-event-listener';
 
-const useMouseRightClick = (element, action) => {
-  const [clicked, setClick] = useState(false);
+const useMouseRightClick = (element, callback) => {
   const handler = useCallback(
     (e) => {
       e.preventDefault();
-      setClick(state => !state);
+      console.log(callback);
+      callback();
     },
-    [setClick]
+    [callback]
   );
 
   useEventListener('contextmenu', handler, element);
-
-  return clicked;
 };
 
 export default useMouseRightClick;

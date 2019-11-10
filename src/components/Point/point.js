@@ -1,5 +1,4 @@
 import React, {
-  useEffect,
   useRef,
 } from 'react';
 import styled from 'styled-components';
@@ -27,21 +26,17 @@ const Circle = styled.div`
 
 const Point = ({ id, x, y }) => {
   const ref = useRef();
-  const clicked = useMouseRightClick(ref);
+  const options = {
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  };
+  const callback = useFetch(`http://localhost:8080/api/points/${id}`, options);
 
-  useEffect(() => {
-    if (clicked) {
-     const options = {
-        method: 'DELETE',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-      };
-      useFetch(`http://localhost:8080/api/points/${id}`, options);
-    }
-  }, [clicked, id]);
-  
+  useMouseRightClick(ref, callback);
+
   return (
     <Circle ref={ref}
       key={id}
