@@ -3,7 +3,6 @@ import Loading from './Loading';
 import Map from './Map';
 import Pins from './Pins';
 import Point from './Point';
-import PositionBoard from './PositionBoard';
 
 export {
   ErrorScreen,
@@ -11,5 +10,4 @@ export {
   Map,
   Pins,
   Point,
-  PositionBoard
 };

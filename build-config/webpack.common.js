@@ -17,7 +17,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/react', '@babel/preset-env'],
-            plugins: ['@babel/plugin-syntax-dynamic-import']
+            plugins: ['@babel/plugin-syntax-dynamic-import', '@babel/plugin-proposal-class-properties']
           }
         }
       },
@@ -35,10 +35,16 @@ module.exports = {
     alias: {
       components: path.resolve(__dirname, '../src/components'),
       interfaces: path.resolve(__dirname, '../src/interfaces'),
-      hooks: path.resolve(__dirname, '../src/hooks'),
+      reducers: path.resolve(__dirname, '../src/reducers'),
     },
     enforceExtension: false,
     extensions: ['.json', '.js', '.jsx']
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+    usedExports: true,
   },
   output: {
     path: path.resolve(__dirname, '../dist'),

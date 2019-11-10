@@ -5,33 +5,28 @@ import {
   Loading,
   Point,
 } from 'components';
-import useFetch from 'hooks/use-fetch';
-import apiResponseAdapter from 'interfaces/adapters/api-response-adapter';
 
-const Pins = () => {
-  const url = 'http://localhost:8080/api/points';
-  const {
-    response,
-    error,
-    isLoading,
-  } = useFetch(url);
 
+const Pins = (props) => {
+  const { onDelete, pins, isLoading, error } = props;
   if (isLoading) {
     return (
       <Loading />
     );
   }
 
-  if (error) {
-    return (
-      <ErrorScreen error={error} />
-    );
-  }
-
-  const pins = (response && apiResponseAdapter(response)) || [];
-
-  return pins && pins.length > 0
-    && pins.map(({ id, x, y }) => (<Point key={id} x={x} y={y} />));
+  return (
+    <div>
+      {
+        pins
+        && pins.length > 0
+        && pins.map(({ id, x, y }) => (
+          <Point key={id} id={id} x={x} y={y} onDelete={onDelete} />)
+        )
+      }
+      {error && <ErrorScreen error={error} />}
+    </div>
+  );
 };
 
 export default Pins;

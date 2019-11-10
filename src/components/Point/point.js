@@ -1,11 +1,5 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-
-import useFetch from 'hooks/use-fetch';
 
 const Circle = styled.div`
   background-color: red;
@@ -25,34 +19,12 @@ const Circle = styled.div`
 	}
 `;
 
-const Point = ({ id, x, y }) => {
-  const ref = useRef();
-
-  const onHandleRightClick = (e) => {
-    e.preventDefault();
-  }
-
-  const options = {
-    method: 'DELETE',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-  };
-  const { isLoading, response, error } = useFetch(`http://localhost:8080/api/points/${id}`, options);
-
-  if (isLoading) {
-    return null;
-  }
-
-  return (
-    <Circle ref={ref}
-      key={id}
-      x={x}
-      y={y}
-      onContextMenu={onHandleRightClick}
-    />
-  );
-};
+const Point = ({ id, x, y, onDelete }) => (
+  <Circle key={id}
+    x={x}
+    y={y}
+    onClick={(e) => onDelete(e, id)}
+  />
+);
 
 export default Point;

@@ -3,20 +3,23 @@ import styled from 'styled-components';
 
 const Detail = styled.div`
   color: maroon;
-  font-size: 10rem;
+  font-size: 2rem;
   font-style: italic;
   font-weight: bold;
 `;
 
 const StatusCode = styled.div`
   color: red;
-  font-size: 10rem;
+  font-size: 3rem;
   font-weight: bold;
 `;
 
 const Screen = styled.div`
   border: 20px solid red;
-  height: 100vh;
+  bottom: 0;
+  height: 150px;
+  position: absolute;
+  text-align: center;
   width: 100%;
 `;
 
