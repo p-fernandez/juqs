@@ -1,9 +1,9 @@
 import React from 'react';
 
-import ErrorScreen from '../ErrorScreen';
-import Point from '../Point';
-import useFetch from '../../hooks/use-fetch';
-import apiResponseAdapter from '../../interfaces/adapters/api-response-adapter';
+import ErrorScreen from 'components/ErrorScreen';
+import Point from 'components/Point';
+import useFetch from 'hooks/use-fetch';
+import apiResponseAdapter from 'interfaces/adapters/api-response-adapter';
 
 const Pins = () => {
   const {

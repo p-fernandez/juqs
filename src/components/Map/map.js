@@ -3,27 +3,30 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 
-import Pins from '../Pins';
-import useFetch from '../../hooks/use-fetch';
-import useMouseClick from '../../hooks/use-mouse-click';
+import Pins from 'components/Pins';
+import useFetch from 'hooks/use-fetch';
+import useMouseClick from 'hooks/use-mouse-click';
+
+import map from './map.png';
 
 const MapContainer = styled.div`
-  background-color: green;
-  height: 500px;
-  margin: 0;
-  overflow: hidden;
-  padding: 0;
+  background: no-repeat url('.${props => props.image}') 50% / 100%;
   position: relative;
-  width: 500px;
+`;
+
+const ImageContainer = styled.img`
+  vertical-align: top;
+  width: 100%;
+  opacity: 0;
 `;
 
 const createHash = (x, y) => `x${x}y${y}`;
 
 const Map = () => {
   const ref = useRef();
+  /*
   const coords = useMouseClick(ref);
   const { x, y } = coords;
-/*
   const options = {
     method: 'POST',
     headers: {
@@ -35,7 +38,8 @@ const Map = () => {
   useFetch('http://localhost:8080/api/points', options);
 */
   return (
-    <MapContainer ref={ref}>
+    <MapContainer ref={ref} image={map}>
+      <ImageContainer alt='map' src={map} />
       <Pins />
     </MapContainer>
   );

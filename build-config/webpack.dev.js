@@ -8,7 +8,7 @@ const commonConfig = require('./webpack.common')
 
 module.exports = webpackMerge(commonConfig, {
   devServer: {
-    contentBase: path.join(__dirname, 'public'),
+    contentBase: path.join(__dirname, '../public'),
     compress: true,
     historyApiFallback: true,
     hot: true,
@@ -20,7 +20,7 @@ module.exports = webpackMerge(commonConfig, {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: path.join(__dirname, '../public/index.html'),
       inject: true
     }),
     new webpack.HotModuleReplacementPlugin()

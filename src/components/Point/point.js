@@ -3,8 +3,8 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 
-import useFetch from '../../hooks/use-fetch';
-import useMouseRightClick from '../../hooks/use-mouse-right-click';
+import useFetch from 'hooks/use-fetch';
+import useMouseRightClick from 'hooks/use-mouse-right-click';
 
 const Circle = styled.div`
   background-color: red;
