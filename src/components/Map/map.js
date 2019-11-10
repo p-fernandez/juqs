@@ -23,8 +23,7 @@ const Map = () => {
   const ref = useRef();
   const coords = useMouseClick(ref);
   const { x, y } = coords;
-
-  console.log(x, y);
+/*
   const options = {
     method: 'POST',
     headers: {
@@ -34,7 +33,7 @@ const Map = () => {
     body: JSON.stringify({id: createHash(x, y), x, y })
   };
   useFetch('http://localhost:8080/api/points', options);
-
+*/
   return (
     <MapContainer ref={ref}>
       <Pins />

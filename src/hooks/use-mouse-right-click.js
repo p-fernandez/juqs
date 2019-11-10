@@ -10,9 +10,9 @@ const useMouseRightClick = (element, action) => {
   const handler = useCallback(
     (e) => {
       e.preventDefault();
-      setClick(!clicked);
+      setClick(state => !state);
     },
-    [clicked, setClick]
+    [setClick]
   );
 
   useEventListener('contextmenu', handler, element);
