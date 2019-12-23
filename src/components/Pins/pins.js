@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
 
 import {
   ErrorScreen,
@@ -8,13 +11,24 @@ import {
 import useFetch from 'hooks/use-fetch';
 import apiResponseAdapter from 'interfaces/adapters/api-response-adapter';
 
+const url = 'http://localhost:8080/api/points';
+
 const Pins = () => {
-  const url = 'http://localhost:8080/api/points';
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
-    response,
-    error,
-    isLoading,
+    response: fetchResponse,
+    error: fetchError,
+    isLoading: fetchIsLoading,
   } = useFetch(url);
+
+  useEffect(() => {
+    setResponse(fetchResponse);
+    setError(fetchError);
+    setIsLoading(fetchIsLoading);
+  }, [fetchResponse, fetchError, fetchIsLoading]);
 
   if (isLoading) {
     return (

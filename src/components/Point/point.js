@@ -39,18 +39,13 @@ const Point = ({ id, x, y }) => {
       'Content-Type': 'application/json'
     },
   };
-  const { isLoading, response, error } = useFetch(`http://localhost:8080/api/points/${id}`, options);
-
-  if (isLoading) {
-    return null;
-  }
 
   return (
     <Circle ref={ref}
       key={id}
       x={x}
       y={y}
-      onContextMenu={onHandleRightClick}
+      // onContextMenu={onHandleRightClick}
     />
   );
 };

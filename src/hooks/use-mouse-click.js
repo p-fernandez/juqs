@@ -9,7 +9,7 @@ import {
 import useEventListener from './use-event-listener';
 
 const useMouseClick = (element, callback) => {
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [coords, setCoords] = useState({ x: null, y: null });
   const handler = useCallback(
     ({ clientX, clientY }) => {
       const coords = calculateCoordsInsideElement(element, clientX, clientY);

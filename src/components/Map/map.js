@@ -1,5 +1,7 @@
 import React, {
+  useEffect,
   useRef,
+  useState,
 } from 'react';
 import styled from 'styled-components';
 
@@ -20,25 +22,46 @@ const ImageContainer = styled.img`
   opacity: 0;
 `;
 
+const url = 'http://localhost:8080/api/points'; 
+
 const createHash = (x, y) => `x${x}y${y}`;
 
 const Map = () => {
   const ref = useRef();
-  const coords = useMouseClick(ref);
-  const { x, y } = coords;
-  /*
-  const [{ response, isLoading, error }, setOptions, setUrl] = useFetch();
-  
-  setOptions({
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({id: createHash(x, y), x, y })
-  });
-  setUrl('http://localhost:8080/api/points');
-  */
+
+  const clickCoords = useMouseClick(ref);
+  const [coords, setCoords] = useState({x: null, y: null});
+  const [options, setOptions] = useState(null); 
+
+  const [reqResponse, setReqResponse] = useState(null);
+  const [reqError, setReqError] = useState(null);
+
+  const { response, error } = useFetch(url, options);
+
+  useEffect(() => {
+    const { x, y } = clickCoords;
+    setCoords({ x, y });
+  }, [clickCoords]);
+
+  useEffect(() => {
+    const { x, y } = coords;
+    if (x && y) {
+      setOptions({
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id: createHash(x, y), x, y })
+      });
+    }
+  }, [coords]);
+
+  useEffect(() => {
+    setReqResponse(response);
+    setReqError(error);
+  }, [response, error]);
+
   return (
     <MapContainer ref={ref} image={map}>
       <ImageContainer alt='map' src={map} />
